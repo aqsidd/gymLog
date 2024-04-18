@@ -12,21 +12,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.gymlog.database.GymLogRepository;
+import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.databinding.ActivityMainBinding;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
+    private GymLogRepository repository;
     String mExercise = "";
 
     double mWeight = 0.0;
 
     int mReps = 0;
 
-    private static final String TAG = "DAC_GYMLOG";
+    public static final String TAG = "DAC_GYMLOG";
 
 
     @Override
@@ -36,19 +39,28 @@ ActivityMainBinding binding;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
+        repository = GymLogRepository.getRepository(getApplication());
 
+        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
 
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(MainActivity.this, "IT WORKED", Toast.LENGTH_SHORT).show();
                 getInformationFromDisplay();
+                insertGymLogRecord();
                 updateDisplay();
             }
         });
 
     }
+
+    private void insertGymLogRecord(){
+        GymLog log = new GymLog(mExercise, mWeight, mReps);
+        repository.insertGymLog(log);
+
+    }
+
 
     private void updateDisplay(){
         String currentInfo = binding.logDisplayTextView.getText().toString();
@@ -57,8 +69,6 @@ ActivityMainBinding binding;
         binding.logDisplayTextView.setText(newDisplay);
 
     }
-
-
 
     private void getInformationFromDisplay(){
 
@@ -72,7 +82,7 @@ ActivityMainBinding binding;
 
 
         try{
-            mReps = Integer.parseInt(binding.weightInputEditText.getText().toString());
+            mReps = Integer.parseInt(binding.repsInputEditText.getText().toString());
         } catch (NumberFormatException e){
             Log.d(TAG, "ERROR2");
         }
