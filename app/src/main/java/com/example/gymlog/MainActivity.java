@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertGymLogRecord(){
+        if(mExercise.isEmpty()){
+            return;
+        }
+
         GymLog log = new GymLog(mExercise, mWeight, mReps);
         repository.insertGymLog(log);
 
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateDisplay(){
+
+
         String currentInfo = binding.logDisplayTextView.getText().toString();
         Log.d(TAG, "current info: "+currentInfo);
         String newDisplay = String.format(Locale.US, "Exercise:%s%nWeight:%.2f%nReps:%d%n=====%n%s",mExercise,mWeight,mReps,currentInfo);
