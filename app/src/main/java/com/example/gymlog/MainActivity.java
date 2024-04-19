@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.ImageDecoderKt;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
+        user = new User("Anwar", "password");
         loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, -1);
 
     }
@@ -94,10 +97,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu){
         MenuItem item = menu.findItem(R.id.logoutMenuItem);
         item.setVisible(true);
-        item.setTitle("Anwar");
+        item.setTitle(user.getUsername());
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Toast.makeText(MainActivity.this, "LOGOUT", Toast.LENGTH_SHORT).show();
+                logout();
+                return false;
+            }
+        });
         return true;
     }
 
+    private void logout() {
+        startActivity(LoginActivity.loginIntentFactory(getApplicationContext()));
+    }
 
 
     static Intent mainActivityIntentFactory(Context context, int userId){
