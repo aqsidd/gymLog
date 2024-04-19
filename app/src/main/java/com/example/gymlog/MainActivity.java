@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     int mReps = 0;
 
+    int loggedInUserId = -1;
+
     public static final String TAG = "DAC_GYMLOG";
 
 
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        GymLog log = new GymLog(mExercise, mWeight, mReps);
+        GymLog log = new GymLog(mExercise, mWeight, mReps, loggedInUserId);
         repository.insertGymLog(log);
 
     }
