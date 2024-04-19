@@ -23,6 +23,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MAIN_ACTIVITY_USER_ID = "com.example.gymlog.MAIN_ACTIVITY_USER_ID";
     private ActivityMainBinding binding;
 
     private GymLogRepository repository;
@@ -71,14 +72,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
+        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, -1);
 
     }
 
-//    static Intent mainActivityIntentFactory(Context context, int userId){
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.putExtra(MAIN_ACTIVITY_USER_ID, userId);
-//        return intent;
-//    }
+    static Intent mainActivityIntentFactory(Context context, int userId){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MAIN_ACTIVITY_USER_ID, userId);
+        return intent;
+    }
 
 
     private void insertGymLogRecord(){
